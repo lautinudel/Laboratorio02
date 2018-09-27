@@ -20,9 +20,7 @@ public class MainActivity extends AppCompatActivity {
         btnNuevoPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this,ListaProductos.class);
-                int valor = 1;
-                i.putExtra("NUEVO_PEDIDO",valor);
+                Intent i = new Intent(MainActivity.this,AltaPedido.class);
                 startActivity(i);
             }
         });
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         btnHistorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent();
+                Intent i = new Intent(MainActivity.this, HistorialPedidos.class);
                 startActivity(i);
             }
         });
@@ -41,8 +39,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this,  ListaProductos.class);
-                int valor = 0;
-                i.putExtra("NUEVO_PEDIDO",valor);
+                i.putExtra("NUEVO_PEDIDO", 0);
                 startActivity(i);
             }
         });

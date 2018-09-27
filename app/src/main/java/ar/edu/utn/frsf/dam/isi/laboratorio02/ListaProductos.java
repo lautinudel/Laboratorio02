@@ -18,6 +18,7 @@ import java.util.List;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.PedidoDetalle;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Producto;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
@@ -30,6 +31,8 @@ public class ListaProductos extends AppCompatActivity{
     Intent intent;
     ListView lista;
     EditText edtProdCantidad;
+    Producto P;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,12 +79,28 @@ public class ListaProductos extends AppCompatActivity{
             }
         });
 
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Producto listItem = ((Producto) lista.getItemAtPosition(position));
+                P=listItem;
+            }
+        });
+
         btnProdAddPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.putExtra("cantidad",edtProdCantidad.getText());
-                intent.putExtra("idProducto",lista.getSelectedItemId());
-                Toast.makeText(ListaProductos.this, edtProdCantidad.getText().toString()+"---"+lista.getSelectedItemId(), Toast.LENGTH_SHORT).show();
+            if(edtProdCantidad.getText().toString().length()>0) {
+                Intent i = new Intent();
+                i.putExtra("cantidad", edtProdCantidad.getText().toString());
+                i.putExtra("idProducto", P.getId());
+                //System.out.println(edtProdCantidad.getText().toString()+" "+P.getId().toString());
+                setResult(ListaProductos.RESULT_OK, i);
+                finish();
+            }else{
+                Toast.makeText(ListaProductos.this, "Por favor ingrese una cantidad", Toast.LENGTH_SHORT).show();
+            }
+
             }
 
         });

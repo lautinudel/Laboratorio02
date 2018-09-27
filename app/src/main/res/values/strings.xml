@@ -6,6 +6,11 @@
     <string name="tvListaProductos">Lista de productos</string>
     <string name="lstProductos"></string>
     <string name="tvCantidad">Cantidad a pedir</string>
-   <string name="edtProdCantidad"></string>
+    <string name="edtProdCantidad"></string>
     <string name="btnProdAddPedido">Agregar</string>
+    <string name="pedido_titulo">Datos del Pedido</string>
+    <string name="pedido_lbl_correo">Correo Electronico</string>
+    <string name="pedido_lbl_modo_entrega">Modo de Entrega</string>
+    <string name="pedido_lbl_direccion">Direccion de Envio</string>
+    <string name="pedido_lbl_hora_entrega">Hora Solicitada (hh:mm)</string>
 </resources>

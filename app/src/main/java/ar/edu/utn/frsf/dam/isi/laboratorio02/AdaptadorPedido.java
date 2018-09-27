@@ -128,6 +128,10 @@ public class AdaptadorPedido extends ArrayAdapter<Pedido> {
                         @Override
                         public void onClick(View view) {
                             Toast.makeText(getContext(), "A implementar.", Toast.LENGTH_SHORT).show();
+                             /*
+                            Intent i = new Intent(ctx, AltaPedido.class);
+                            i.putExtra("NUEVO_PEDIDO",1);
+                            ctx.startActivity(i);*/
                         }
                     });
 

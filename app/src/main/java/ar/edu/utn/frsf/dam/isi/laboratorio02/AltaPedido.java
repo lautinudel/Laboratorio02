@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -46,7 +47,6 @@ public class AltaPedido extends AppCompatActivity {
         setContentView(R.layout.activity_alta_pedido);
         intent = getIntent();
 
-
         Button btnPedidoAddProducto = (Button) findViewById(R.id.btnPedidoAddProducto);
         Button btnPedidoVolver = (Button) findViewById(R.id.btnPedidoVolver);
         Button btnPedidoQuitarProducto = (Button) findViewById(R.id.btnPedidoQuitarProducto);
@@ -61,7 +61,22 @@ public class AltaPedido extends AppCompatActivity {
         final EditText edtPedidoCorreo = (EditText) findViewById(R.id.edtPedidoCorreo);
         final EditText edtPedidoHoraEntrega = (EditText) findViewById(R.id.edtPedidoHoraEntrega);
 
+        //Si vengo de historial de pedidos (detalles)
+        int idABuscar = -1;
+        if(getIntent().getExtras()!=null)  idABuscar = Integer.valueOf(getIntent().getStringExtra("id"));
+        if(idABuscar>-1){
+            unPedido = repositorioPedido.buscarPorId(idABuscar);
+            edtPedidoCorreo.setText(unPedido.getMailContacto());
+            edtPedidoDireccion.setText(unPedido.getDireccionEnvio());
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            edtPedidoHoraEntrega.setText(sdf.format(unPedido.getFecha()));
+            if(unPedido.getRetirar())
+                optPedidoRetira.setChecked(true);
+           else optPedidoEnviar.setChecked(true);
 
+
+        }else
+            unPedido = new Pedido();
 
         lista.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         adaptador = new ArrayAdapter(AltaPedido.this, android.R.layout.simple_list_item_single_choice, ProductosElegidos);
@@ -97,6 +112,11 @@ public class AltaPedido extends AppCompatActivity {
         btnPedidoHacerPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
+
+
                 //Campo correo electrónico no vacío.
                 //Uno de los dos RadioButton debe estar activo.
                 //Si lo esta el de enviar a domicilio, el EditText de Dirección envío debe no estar vacío.
@@ -116,15 +136,15 @@ public class AltaPedido extends AppCompatActivity {
                         } else {
                             String[] horaIngresada = edtPedidoHoraEntrega.getText().toString().split(":");
                             GregorianCalendar hora = new GregorianCalendar();
-                            Pedido nuevoPedido = new Pedido();
+
                             int valorHora = Integer.valueOf(horaIngresada[0]);
                             int valorMinuto = Integer.valueOf(horaIngresada[1]);
                             if (valorHora < 0 || valorHora > 23) {
-                                Toast.makeText(AltaPedido.this, "La hora ingresada (" + valorHora + " es incorrecta", Toast.LENGTH_LONG).show();
+                                Toast.makeText(AltaPedido.this, "La hora ingresada " + valorHora + " es incorrecta", Toast.LENGTH_LONG).show();
                                 return;
                             }
                             if (valorMinuto < 0 || valorMinuto > 59) {
-                                Toast.makeText(AltaPedido.this, "Los minutos (" + valorMinuto + " son incorrectos", Toast.LENGTH_LONG).show();
+                                Toast.makeText(AltaPedido.this, "Los minutos " + valorMinuto + " son incorrectos", Toast.LENGTH_LONG).show();
                                 return;
                             }
                             hora.set(Calendar.HOUR_OF_DAY, valorHora);
@@ -132,22 +152,23 @@ public class AltaPedido extends AppCompatActivity {
                             hora.set(Calendar.SECOND, Integer.valueOf(0));
 
                             Boolean retirar;
-                            if (optPedidoRetira.isActivated()) {
+                            if (optPedidoRetira.isChecked()) {
                                 retirar = true;
                             } else {
                                 retirar = false;
                             }
 
                             //Seteamos el pedido nuevo
-                            nuevoPedido.setFecha(hora.getTime());
-                            nuevoPedido.setDetalle(ProductosElegidos);
-                            nuevoPedido.setEstado(Pedido.Estado.REALIZADO);
-                            nuevoPedido.setMailContacto(edtPedidoCorreo.getText().toString());
-                            nuevoPedido.setRetirar(retirar);
-                            nuevoPedido.setDireccionEnvio(edtPedidoDireccion.getText().toString());
+                            unPedido.setFecha(hora.getTime());
+                            unPedido.setDetalle(ProductosElegidos);
+                            unPedido.setEstado(Pedido.Estado.REALIZADO);
+                            unPedido.setMailContacto(edtPedidoCorreo.getText().toString());
+                            unPedido.setRetirar(retirar);
+                            unPedido.setDireccionEnvio(edtPedidoDireccion.getText().toString());
 
                             //Guardamos en el repositorio de pedidos y pasamos a la actividad "HistorialPedidos"
-                            repositorioPedido.guardarPedido(nuevoPedido);
+                            repositorioPedido.guardarPedido(unPedido);
+                            System.out.println(unPedido.getId());
                             Intent i = new Intent(AltaPedido.this, HistorialPedidos.class);
                             setResult(RESULT_OK);
                             startActivity(i);

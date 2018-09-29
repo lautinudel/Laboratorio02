@@ -33,7 +33,7 @@ public class AdaptadorPedido extends ArrayAdapter<Pedido> {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
         if(view == null){
             //Si es nulo le pasamos el row con el layout que queremos (inflamos la vista)
@@ -106,17 +106,14 @@ public class AdaptadorPedido extends ArrayAdapter<Pedido> {
 
                     modelo.btnCancelar.setOnClickListener(new View.OnClickListener()
                     {
-                        @Override
+                       @Override
                         public void onClick(View view) {
-                            int  indice = (int) view.getTag();
-                            Pedido pedidoSeleccionado = datos.get(indice);
-                            System.out.println(datos);
+                            Pedido pedidoSeleccionado = datos.get(position);
                             if( pedidoSeleccionado.getEstado().equals(Pedido.Estado.REALIZADO)||
                                     pedidoSeleccionado.getEstado().equals(Pedido.Estado.ACEPTADO)||
                                     pedidoSeleccionado.getEstado().equals(Pedido.Estado.EN_PREPARACION)){
                                 pedidoSeleccionado.setEstado(Pedido.Estado.CANCELADO);
                                 AdaptadorPedido.this.notifyDataSetChanged();
-                                System.out.println(datos);
                                 return;
                             }
                         }
@@ -127,11 +124,12 @@ public class AdaptadorPedido extends ArrayAdapter<Pedido> {
                     modelo.btnVerDetalle.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Toast.makeText(getContext(), "A implementar.", Toast.LENGTH_SHORT).show();
-                             /*
+                            //Toast.makeText(getContext(), "A implementar.", Toast.LENGTH_SHORT).show();
+
                             Intent i = new Intent(ctx, AltaPedido.class);
-                            i.putExtra("NUEVO_PEDIDO",1);
-                            ctx.startActivity(i);*/
+                            //i.putExtra("NUEVO_PEDIDO",1);
+                            i.putExtra("id", datos.get(position).getId().toString());
+                            ctx.startActivity(i);
                         }
                     });
 

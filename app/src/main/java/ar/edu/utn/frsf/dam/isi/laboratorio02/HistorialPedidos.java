@@ -35,7 +35,7 @@ public class HistorialPedidos extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(HistorialPedidos.this,AltaPedido.class);
-                i.putExtra("NUEVO_PEDIDO",1);
+                //i.putExtra("NUEVO_PEDIDO",1);
                 startActivityForResult(i,3);
             }
 

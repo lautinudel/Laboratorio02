@@ -18,9 +18,8 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         int idABuscar;
         if(intent.getExtras()!=null){
-            System.out.println("HOLA");
             if(intent.getStringExtra("estado").equals("ESTADO_ACEPTADO")){
-                idABuscar = Integer.valueOf(intent.getStringExtra("idPedido"));
+                idABuscar = intent.getIntExtra("idPedido", 0);
                 List<Pedido> lista = repositorioPedido.getLista();
                 for(Pedido p:lista){
                     if(p.getId().equals(idABuscar))

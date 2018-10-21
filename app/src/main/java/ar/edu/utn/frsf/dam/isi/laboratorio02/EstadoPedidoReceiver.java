@@ -77,13 +77,12 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
                                     .setStyle(new NotificationCompat.InboxStyle()
                                             .addLine("Previsto el envio para: ")
                                             .addLine(fecha)
- 
+
                                     )
                                     .build();
 
 
                             notificationManager.notify(i, notification);
-
                             i++;
                         }
                     }

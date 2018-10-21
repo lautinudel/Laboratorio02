@@ -177,13 +177,19 @@ public class AltaPedido extends AppCompatActivity {
                                     // buscar pedidos no aceptados y aceptarlos automáticamente
                                     List<Pedido> lista = repositorioPedido.getLista();
                                     for(Pedido p:lista){
-                                        if(p.getEstado().equals(Pedido.Estado.REALIZADO))
+                                        if(p.getEstado().equals(Pedido.Estado.REALIZADO)) {
                                             p.setEstado(Pedido.Estado.ACEPTADO);
+                                            Intent j = new Intent(AltaPedido.this, EstadoPedidoReceiver.class);
+                                            j.putExtra("idPedido",p.getId());
+                                            j.putExtra("estado", "ESTADO_ACEPTADO");
+                                           j.setAction("ESTADO_ACEPTADO");
+                                           sendBroadcast(j);
+                                        }
                                     }
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Toast.makeText(AltaPedido.this,"Informacion de pedidos actualizada!",Toast.LENGTH_LONG).show();
+                                           // Toast.makeText(AltaPedido.this,"Informacion de pedidos actualizada!",Toast.LENGTH_LONG).show();
                                         }
                                     });
                                 }};

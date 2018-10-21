@@ -12,13 +12,13 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
 
-                <action android:name=".ESTADO_ACEPTADO"/>
-                <action android:name=".ESTADO_CANCELADO"/>
-                <action android:name=".ESTADO_EN_PREPARACION"/>
-                <action android:name=".ESTADO_LISTO"/>
-
+                <action android:name=".ESTADO_ACEPTADO" />
+                <action android:name=".ESTADO_CANCELADO" />
+                <action android:name=".ESTADO_EN_PREPARACION" />
+                <action android:name=".ESTADO_LISTO" />
             </intent-filter>
         </activity>
         <activity android:name=".ListaProductos" />
@@ -28,13 +28,12 @@
         <receiver
             android:name=".EstadoPedidoReceiver"
             android:enabled="true"
-            android:exported="true">
-        </receiver>
+            android:exported="true"></receiver>
 
-
+        <service
+            android:name=".PrepararPedidoService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
-
-
-
 
 </manifest>

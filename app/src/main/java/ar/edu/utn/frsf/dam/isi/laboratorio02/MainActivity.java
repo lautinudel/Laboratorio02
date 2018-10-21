@@ -54,10 +54,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //lanzar un servicio intent service
+                        Intent intent = new Intent(MainActivity.this, PrepararPedidoService.class);
+                        startService(intent);
                     }
                 }
         );
-        
 
 
     }

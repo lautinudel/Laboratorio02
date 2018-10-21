@@ -63,20 +63,21 @@ public class AltaPedido extends AppCompatActivity {
 
         //Si vengo de historial de pedidos (detalles)
         int idABuscar = -1;
-        if(getIntent().getExtras()!=null)  idABuscar = Integer.valueOf(getIntent().getStringExtra("id"));
-        if(idABuscar>-1){
-            unPedido = repositorioPedido.buscarPorId(idABuscar);
-            edtPedidoCorreo.setText(unPedido.getMailContacto());
-            edtPedidoDireccion.setText(unPedido.getDireccionEnvio());
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            edtPedidoHoraEntrega.setText(sdf.format(unPedido.getFecha()));
-            if(unPedido.getRetirar())
-                optPedidoRetira.setChecked(true);
-           else optPedidoEnviar.setChecked(true);
-
-
+        if(getIntent().getExtras()!=null){
+            idABuscar = Integer.valueOf(getIntent().getStringExtra("id"));
+            if(idABuscar>-1){
+                unPedido = repositorioPedido.buscarPorId(idABuscar);
+                edtPedidoCorreo.setText(unPedido.getMailContacto());
+                edtPedidoDireccion.setText(unPedido.getDireccionEnvio());
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                edtPedidoHoraEntrega.setText(sdf.format(unPedido.getFecha()));
+                if(unPedido.getRetirar())
+                    optPedidoRetira.setChecked(true);
+                else optPedidoEnviar.setChecked(true);
+            }else unPedido = new Pedido();
         }else
             unPedido = new Pedido();
+
 
         lista.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         adaptador = new ArrayAdapter(AltaPedido.this, android.R.layout.simple_list_item_single_choice, ProductosElegidos);
@@ -112,11 +113,6 @@ public class AltaPedido extends AppCompatActivity {
         btnPedidoHacerPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
-
-
                 //Campo correo electrónico no vacío.
                 //Uno de los dos RadioButton debe estar activo.
                 //Si lo esta el de enviar a domicilio, el EditText de Dirección envío debe no estar vacío.
@@ -168,12 +164,49 @@ public class AltaPedido extends AppCompatActivity {
 
                             //Guardamos en el repositorio de pedidos y pasamos a la actividad "HistorialPedidos"
                             repositorioPedido.guardarPedido(unPedido);
-                            System.out.println(unPedido.getId());
+                            //System.out.println(unPedido.getId());
+
+
+                            Thread r = new Thread() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.currentThread().sleep(10000);
+                                    }catch (InterruptedException e) {
+                                        e.printStackTrace(); }
+                                    // buscar pedidos no aceptados y aceptarlos automáticamente
+                                    List<Pedido> lista = repositorioPedido.getLista();
+                                    for(Pedido p:lista){
+                                        if(p.getEstado().equals(Pedido.Estado.REALIZADO)) {
+                                            p.setEstado(Pedido.Estado.ACEPTADO);
+                                            Intent j = new Intent(AltaPedido.this, EstadoPedidoReceiver.class);
+                                            j.putExtra("idPedido",p.getId());
+                                            j.putExtra("estado", "ESTADO_ACEPTADO");
+                                           j.setAction("ESTADO_ACEPTADO");
+                                           sendBroadcast(j);
+                                        }
+                                    }
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                           // Toast.makeText(AltaPedido.this,"Informacion de pedidos actualizada!",Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }};
+                            //Thread unHilo = new Thread();
+                            r.start();
+
+
                             Intent i = new Intent(AltaPedido.this, HistorialPedidos.class);
                             setResult(RESULT_OK);
                             startActivity(i);
                         }
+
                     }
+
+
+
+
                 });
 
                 btnPedidoQuitarProducto.setOnClickListener(new View.OnClickListener() {

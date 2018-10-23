@@ -59,7 +59,7 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
                     }
                 }
             }else{
-                if(intent.getStringExtra("estado").equals(intent.getAction())){
+                if(intent.getStringExtra("estado").equals("ESTADO_EN_PREPARACION")){//EN PREPARACION
                     for(Pedido p:lista){
                         if(p.getId().equals(idABuscar)){
                             fecha=p.getFecha().toString();
@@ -86,8 +86,36 @@ public class EstadoPedidoReceiver extends BroadcastReceiver {
                             i++;
                         }
                     }
+                }else{
+                    if(intent.getStringExtra("estado").equals("ESTADO_LISTO")){//Listo
+                        for(Pedido p:lista){
+                            if(p.getId().equals(idABuscar)){
+                                fecha=p.getFecha().toString();
+                                //Toast.makeText(context,"Pedido para"+p.getMailContacto()+" ha cambiado a estado ACEPTADO",Toast.LENGTH_LONG).show();
+                                Intent resultIntent = new Intent(context, HistorialPedidos.class);
+                                resultIntent.putExtra("id", p.getId().toString());
+                                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                                stackBuilder.addNextIntentWithParentStack(resultIntent);
+                                PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                Notification notification = new NotificationCompat.Builder(context, "CANAL01").setContentIntent(resultPendingIntent)
+                                        .setSmallIcon(R.mipmap.ic_launcher)
+                                        .setContentTitle("Tu pedido esta listo")
+                                        .setContentText("El costo sera de "+p.total())
+                                        .setStyle(new NotificationCompat.InboxStyle()
+                                                .addLine("Previsto el envio para: ")
+                                                .addLine(fecha)
+
+                                        )
+                                        .build();
+
+
+                                notificationManager.notify(i, notification);
+                                i++;
+                            }
+                        }
                 }
-            }
+            }}
 
         }
     }

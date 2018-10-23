@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ListaProductos">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvSeleccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar una categoria" />
+
+        <Spinner
+            android:id="@+id/cmbProductosCategoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvListaProductos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lista de productos" />
+
+        <ListView
+            android:id="@+id/lstProductos"
+            android:layout_width="match_parent"
+            android:layout_height="273dp">
+
+        </ListView>
+
+        <TextView
+            android:id="@+id/tvCantidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cantidad a pedir"
+            android:visibility="visible"
+            tools:text="Cantidad a pedir" />
+
+        <EditText
+            android:id="@+id/edtProdCantidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:enabled="false"
+            android:visibility="visible"
+            tools:text="Put a number" />
+
+        <Button
+            android:id="@+id/btnProdAddPedido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="AGREGAR"
+            android:enabled="false"
+            android:visibility="visible"
+            tools:text="AGREGAR" />
+
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

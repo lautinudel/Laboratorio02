@@ -1,6 +1,7 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,6 +47,10 @@ public class AltaPedido extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alta_pedido);
         intent = getIntent();
+
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("configuracion_ui",0);
+        System.out.println("PREFERENCIAS: "+sharedPreferences.getString("edit_text_preference_1","Default value"));
+
 
         Button btnPedidoAddProducto = (Button) findViewById(R.id.btnPedidoAddProducto);
         Button btnPedidoVolver = (Button) findViewById(R.id.btnPedidoVolver);

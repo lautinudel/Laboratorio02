@@ -1,6 +1,8 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,6 +49,8 @@ public class AltaPedido extends AppCompatActivity {
         setContentView(R.layout.activity_alta_pedido);
         intent = getIntent();
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);//getApplicationContext().getSharedPreferences("Preferencias",0);
+
         Button btnPedidoAddProducto = (Button) findViewById(R.id.btnPedidoAddProducto);
         Button btnPedidoVolver = (Button) findViewById(R.id.btnPedidoVolver);
         Button btnPedidoQuitarProducto = (Button) findViewById(R.id.btnPedidoQuitarProducto);
@@ -60,7 +64,8 @@ public class AltaPedido extends AppCompatActivity {
         lista = (ListView) findViewById(R.id.lstPedidoItems);
         final EditText edtPedidoCorreo = (EditText) findViewById(R.id.edtPedidoCorreo);
         final EditText edtPedidoHoraEntrega = (EditText) findViewById(R.id.edtPedidoHoraEntrega);
-
+        edtPedidoCorreo.setText(sharedPreferences.getString("edit_text_preference_1","Default value"));
+        optPedidoRetira.setChecked(sharedPreferences.getBoolean("check_box_preference_1", false));
         //Si vengo de historial de pedidos (detalles)
         int idABuscar = -1;
         if(getIntent().getExtras()!=null){

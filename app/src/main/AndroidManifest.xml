@@ -51,7 +51,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Preferencias"></activity>
+        <activity android:name=".Preferencias" />
+        <activity android:name=".modelo.Main2Activity"></activity>
     </application>
 
 </manifest>

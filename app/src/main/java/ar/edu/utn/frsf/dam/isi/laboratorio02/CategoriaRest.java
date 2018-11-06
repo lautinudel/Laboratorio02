@@ -1,7 +1,8 @@
-package ar.edu.utn.frsf.dam.isi.laboratorio02.modelo;
+package ar.edu.utn.frsf.dam.isi.laboratorio02;
 
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -11,10 +12,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
+
 public class CategoriaRest {
 
     // realiza el POST de una categoría al servidor REST
-    public void crearCategoria(Categoria c) {
+    public void crearCategoria(Categoria c) throws Exception{
         //Variables de conexión y stream de escritura y lectura
         HttpURLConnection urlConnection = null;
         DataOutputStream printout = null;
@@ -25,12 +28,12 @@ public class CategoriaRest {
         categoriaJson.put("nombre", c.getNombre());
 
         //Abrir una conexión al servidor para enviar el POST
-        URL url = new URL("_________________________");
+        URL url = new URL("http://10.0.2.2:5000/");
         urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setChunkedStreamingMode(0);
-        urlConnection.setRequestProperty("Content-Type", ______________);
+        urlConnection.setRequestProperty("Content-Type", "application/json");
         urlConnection.setDoOutput(true);
-        urlConnection.setRequestMethod(____________);
+        urlConnection.setRequestMethod("POST");
 
         //Obtener el outputStream para escribir el JSON
         printout = new DataOutputStream(urlConnection.getOutputStream());
@@ -63,9 +66,11 @@ public class CategoriaRest {
         // cerrar todos los streams y HTTPUrlCOnnection
         if (printout != null) try {
             printout.close();
+        } catch (Exception e) {
         }
         if (in != null) try {
             in.close();
+        } catch (Exception e) {
         }
         if (urlConnection != null) urlConnection.disconnect();
     }

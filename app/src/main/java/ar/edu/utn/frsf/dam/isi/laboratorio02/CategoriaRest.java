@@ -28,7 +28,7 @@ public class CategoriaRest {
         categoriaJson.put("nombre", c.getNombre());
 
         //Abrir una conexión al servidor para enviar el POST
-        URL url = new URL("http://10.0.2.2:5000/");
+        URL url = new URL("http://10.0.2.2:5000/categorias/");
         urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setChunkedStreamingMode(0);
         urlConnection.setRequestProperty("Content-Type", "application/json");
@@ -48,7 +48,7 @@ public class CategoriaRest {
         StringBuilder sb = new StringBuilder();
         int data = isw.read();
 
-        //Analizar el codigo de lar respuesta
+        //Analizar el codigo de la respuesta
         if (urlConnection.getResponseCode() == 200 ||
                 urlConnection.getResponseCode() == 201) {
             while (data != -1) {

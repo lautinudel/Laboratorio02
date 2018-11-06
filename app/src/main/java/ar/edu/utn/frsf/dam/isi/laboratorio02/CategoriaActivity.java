@@ -30,8 +30,8 @@ public class CategoriaActivity extends AppCompatActivity {
                         CategoriaRest cr = new CategoriaRest();
                         try {
                             cr.crearCategoria(new Categoria(textoCat.getText().toString()));
-                            Toast.makeText(getApplicationContext(),"La categoria "+textoCat.getText().toString()+" se ha creado",Toast.LENGTH_SHORT).show();
-                            textoCat.setText("");
+
+                            
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -39,7 +39,8 @@ public class CategoriaActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                // Toast.makeText(AltaPedido.this,"Informacion de pedidos actualizada!",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"La categoria "+textoCat.getText().toString()+" se ha creado",Toast.LENGTH_SHORT).show();
+                                textoCat.setText("");
                             }
                         });
                     }};

@@ -1,4 +1,17 @@
 {
-"categorias": [],
-"productos": []
+  "categorias": [
+    {
+      "nombre": "torta",
+      "id": 1
+    },
+    {
+      "nombre": "pasta",
+      "id": 2
+    },
+    {
+      "nombre": "carnes",
+      "id": 3
+    }
+  ],
+  "productos": []
 }

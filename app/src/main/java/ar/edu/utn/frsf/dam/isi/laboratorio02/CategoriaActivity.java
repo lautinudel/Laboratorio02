@@ -30,12 +30,9 @@ public class CategoriaActivity extends AppCompatActivity {
                         CategoriaRest cr = new CategoriaRest();
                         try {
                             cr.crearCategoria(new Categoria(textoCat.getText().toString()));
-
-                            
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

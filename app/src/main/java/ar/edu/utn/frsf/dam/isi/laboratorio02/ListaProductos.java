@@ -38,6 +38,7 @@ public class ListaProductos extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_productos);
         intent = getIntent();
+        final CategoriaRest apiRest = new CategoriaRest();
 
         //Obtenemos el edit text y boton agregar, para habilitarlo si es necesario
         edtProdCantidad = (EditText) findViewById(R.id.edtProdCantidad);
@@ -53,15 +54,35 @@ public class ListaProductos extends AppCompatActivity{
         spinner = (Spinner) findViewById(R.id.cmbProductosCategoria);
         //Definición de adaptador para spinner
          ProductoRepository Repositorio = new ProductoRepository();
-            List<Categoria> datosCategoria;
+            final List<Categoria> datosCategoria;
             //Obtenemos los datos a desplegar con el repositorio que creamos.
             datosCategoria = Repositorio.getCategorias();
-            //Creamos el adaptador, pasando por parametro la actividad en al que estamos, el layout y lo que queremos mostrar.
+        //Creamos el adaptador, pasando por parametro la actividad en al que estamos, el layout y lo que queremos mostrar.
             ArrayAdapter adaptador = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,datosCategoria);
             adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             //Definimos el adaptador que va a utilizar el spinner
             spinner.setAdapter(adaptador);
             spinner.setSelection(0);
+
+        Thread r = new Thread() {
+            @Override
+            public void run() {
+
+                try {
+                    List<Categoria> nuevasCat = apiRest.listarTodas();
+                    datosCategoria.addAll(nuevasCat);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }};
+        r.start();
+
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {

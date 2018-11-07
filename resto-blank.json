@@ -11,6 +11,10 @@
     {
       "nombre": "carnes",
       "id": 3
+    },
+    {
+      "nombre": "pescado",
+      "id": 4
     }
   ],
   "productos": []

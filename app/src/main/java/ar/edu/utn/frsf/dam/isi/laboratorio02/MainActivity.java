@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnPrepararPedidos;
     private Button btnConfiguracion;
     private Button btnCategorias;
-
+    private Button btnGestionProducto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +78,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
+        btnGestionProducto= (Button) findViewById(R.id.btnGestionProducto);
+        btnGestionProducto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this,GestionProductoActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     private void createNotificationChannel() {

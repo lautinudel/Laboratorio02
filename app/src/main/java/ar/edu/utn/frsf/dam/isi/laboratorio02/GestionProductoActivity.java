@@ -1,5 +1,6 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.ToggleButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRetrofit;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
@@ -31,10 +35,14 @@ public class GestionProductoActivity extends AppCompatActivity {
     private Button btnBorrar;
     private Boolean flagActualizacion;
     private ArrayAdapter<Categoria> comboAdapter;
+    private Producto productoBuscado;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestion_producto);
+
+        //Definiciones
         flagActualizacion = false;
         opcionNuevoBusqueda = (ToggleButton)
                 findViewById(R.id.abmProductoAltaNuevo);
@@ -61,30 +69,56 @@ public class GestionProductoActivity extends AppCompatActivity {
         idProductoBuscar.setEnabled(false);
 
 
+        //Hilo para cargar categorias del API REST en el spinner
+        final List<Categoria> datosCategoria = new ArrayList<>();
+        final CategoriaRest apiRest = new CategoriaRest();
+
+        ArrayAdapter adaptador = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,datosCategoria);
+        adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        comboCategorias.setAdapter(adaptador);
+        comboCategorias.setSelection(0);
+
+        Thread r = new Thread() {
+            @Override
+            public void run() {
+
+                try {
+                    List<Categoria> nuevasCat = apiRest.listarTodas();
+                    datosCategoria.addAll(nuevasCat);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }};
+        r.start();
+
+
+        //Métodos
         opcionNuevoBusqueda.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
            @Override
            public void onCheckedChanged(CompoundButton buttonView,
                                         boolean isChecked) {
-               flagActualizacion =isChecked;
+               flagActualizacion=isChecked;
                btnBuscar.setEnabled(isChecked);
                btnBorrar.setEnabled(isChecked);
                idProductoBuscar.setEnabled(isChecked);
            }
        });
 
-        btnGuardar.setOnClickListener(new View.OnClickListener() {
+        btnBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Categoria CatElegida = new Categoria();
-                CatElegida = (Categoria) comboCategorias.getSelectedItem();
-                Producto p = new Producto(Integer.valueOf(idProductoBuscar.getText().toString()),nombreProducto.getText().toString(),
-                        descProducto.getText().toString(),Double.valueOf(precioProducto.getText().toString()),CatElegida);
                 ProductoRetrofit clienteRest =
                         RestClient.getInstance()
                                 .getRetrofit()
                                 .create(ProductoRetrofit.class);
-                Call<Producto> altaCall= clienteRest.crearProducto(p);
-                altaCall.enqueue(new Callback<Producto>() {
+                Call<Producto> borrarCall= clienteRest.borrar(Integer.valueOf(idProductoBuscar.getText().toString()));
+                borrarCall.enqueue(new Callback<Producto>() {
                     @Override
                     public void onResponse(Call<Producto> call,
                                            Response<Producto> resp) {
@@ -95,6 +129,88 @@ public class GestionProductoActivity extends AppCompatActivity {
                     }
                 });
             }
+
         });
+
+        btnGuardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProductoRetrofit clienteRest =
+                        RestClient.getInstance()
+                                .getRetrofit()
+                                .create(ProductoRetrofit.class);
+                if(flagActualizacion==false){
+                    Categoria CatElegida = new Categoria();
+                    CatElegida = (Categoria) comboCategorias.getSelectedItem();
+                    Producto p = new Producto(nombreProducto.getText().toString(),
+                            descProducto.getText().toString(),Double.valueOf(precioProducto.getText().toString()),CatElegida);
+                    Call<Producto> altaCall= clienteRest.crearProducto(p);
+                    altaCall.enqueue(new Callback<Producto>() {
+                        @Override
+                        public void onResponse(Call<Producto> call,
+                                               Response<Producto> resp) {
+                            // procesar la respuesta
+                        }
+                        @Override
+                        public void onFailure(Call<Producto> call, Throwable t) {
+                        }
+                    });
+                }else{
+                    Categoria CatElegida = new Categoria();
+                    CatElegida = (Categoria) comboCategorias.getSelectedItem();
+                    productoBuscado = new Producto(nombreProducto.getText().toString(),descProducto.getText().toString(),
+                            Double.valueOf(precioProducto.getText().toString()),CatElegida);
+
+                    /*productoBuscado.setNombre(nombreProducto.getText().toString());
+                    productoBuscado.setCategoria(CatElegida);
+                    productoBuscado.setDescripcion(descProducto.getText().toString());
+                    productoBuscado.setPrecio(Double.valueOf(precioProducto.getText().toString()));*/
+
+                    Call<Producto> ActualizarCall= clienteRest.actualizarProducto(Integer.valueOf(idProductoBuscar.getText().toString()),productoBuscado);
+                    ActualizarCall.enqueue(new Callback<Producto>() {
+                        @Override
+                        public void onResponse(Call<Producto> call,
+                                               Response<Producto> resp) {
+                        }
+                        @Override
+                        public void onFailure(Call<Producto> call, Throwable t) {
+                        }
+                    });
+
+                }
+
+            }
+        });
+
+        btnMenu.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent i = new Intent(GestionProductoActivity.this,MainActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btnBuscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProductoRetrofit clienteRest =
+                        RestClient.getInstance()
+                                .getRetrofit()
+                                .create(ProductoRetrofit.class);
+                Call<Producto> buscarCall= clienteRest.buscarProductoPorId(Integer.valueOf(idProductoBuscar.getText().toString()));
+                buscarCall.enqueue(new Callback<Producto>() {
+                    @Override
+                    public void onResponse(Call<Producto> call,
+                                           Response<Producto> resp) {
+                        nombreProducto.setText(resp.body().getNombre());
+                        descProducto.setText(resp.body().getDescripcion());
+                        precioProducto.setText(resp.body().getPrecio().toString());
+                    }
+                    @Override
+                    public void onFailure(Call<Producto> call, Throwable t) {
+                    }
+                });
+                //clienteRest.buscarProductoPorId(Integer.valueOf(idProductoBuscar.getText().toString()));
+        }});
     }
 }

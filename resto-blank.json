@@ -17,5 +17,12 @@
       "id": 4
     }
   ],
-  "productos": []
+  "productos": [
+    {
+      "descripcion": "ñoquis de papa",
+      "nombre": "ñoquis",
+      "precio": 70,
+      "id": 1
+    }
+  ]
 }

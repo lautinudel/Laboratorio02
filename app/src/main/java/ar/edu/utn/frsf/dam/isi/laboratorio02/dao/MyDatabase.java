@@ -3,6 +3,8 @@ package ar.edu.utn.frsf.dam.isi.laboratorio02.dao;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
+import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
+
 public class MyDatabase {
     // variable de clase privada que almacena una instancia unica de esta entidad
     private static MyDatabase _INSTANCIA_UNICA=null;

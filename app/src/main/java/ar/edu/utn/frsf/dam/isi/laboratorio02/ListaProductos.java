@@ -16,6 +16,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.CategoriaDao;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.MyDatabase;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.PedidoDetalle;
@@ -32,6 +34,7 @@ public class ListaProductos extends AppCompatActivity{
     ListView lista;
     EditText edtProdCantidad;
     Producto P;
+    private CategoriaDao cDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +72,9 @@ public class ListaProductos extends AppCompatActivity{
             public void run() {
 
                 try {
-                    List<Categoria> nuevasCat = apiRest.listarTodas();
+                    cDao = MyDatabase.getInstance(getApplicationContext()).getCategoriaDao();
+                    //List<Categoria> nuevasCat = apiRest.listarTodas();
+                    List<Categoria> nuevasCat = cDao.getAll();
                     datosCategoria.addAll(nuevasCat);
                 } catch (Exception e) {
                     e.printStackTrace();

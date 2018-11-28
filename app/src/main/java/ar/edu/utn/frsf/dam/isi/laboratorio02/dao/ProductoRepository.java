@@ -53,7 +53,8 @@ public class ProductoRepository {
     public List<Producto> buscarPorCategoria(Categoria cat){
         List<Producto> resultado = new ArrayList<>();
         for(Producto p:LISTA_PRODUCTOS){
-            if(p.getCategoria().getId().equals(cat.getId())) resultado.add(p);
+            //if(p.getCategoria().getId().equals(cat.getId())) resultado.add(p);
+            if(p.getCategoria().getNombre().equals(cat.getNombre())) resultado.add(p);
         }
         return resultado;
     }

@@ -76,7 +76,7 @@ public class ListaProductos extends AppCompatActivity{
                     cDao = MyDatabase.getInstance(getApplicationContext()).getCategoriaDao();
                     //List<Categoria> nuevasCat = apiRest.listarTodas();
                     List<Categoria> nuevasCat = cDao.getAll();
-                    System.out.println(nuevasCat.size());
+                   // System.out.println(nuevasCat.size());
                     datosCategoria.addAll(nuevasCat);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -152,9 +152,11 @@ public class ListaProductos extends AppCompatActivity{
             }
         }
         final List<Producto> Datos = Repositorio.buscarPorCategoria(cat);
-       /* final Categoria ca = cat;
-       //System.out.println(ca);
+        lista.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+       ArrayAdapter adaptador = new ArrayAdapter(this,android.R.layout.simple_list_item_single_choice,Datos);
+       lista.setAdapter(adaptador);
 
+        final Categoria finalCat = cat;
         Thread r = new Thread() {
             @Override
             public void run() {
@@ -162,12 +164,12 @@ public class ListaProductos extends AppCompatActivity{
                 try {
                     pDao = MyDatabase.getInstance(getApplicationContext()).getProductoDao();
                     List<Producto> listaP = pDao.getAll();
-                    System.out.println(listaP.size());
-                    for(Producto p : listaP){
-                        if(p.getCategoria().getNombre().equals(ca.getNombre())){
-                           Datos.add(p);
-                        }
+                    for(Producto p: listaP){
+                        if(p.getCategoria().getNombre().equals(finalCat.getNombre()))
+                            Datos.add(p);
+
                     }
+                    System.out.println(Datos.size());
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -179,10 +181,10 @@ public class ListaProductos extends AppCompatActivity{
                     }
                 });
             }};
-        r.start();*/
-        lista.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-       ArrayAdapter adaptador = new ArrayAdapter(this,android.R.layout.simple_list_item_single_choice,Datos);
-       lista.setAdapter(adaptador);
+        r.start();
+
+
+
     }
 
 

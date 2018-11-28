@@ -18,6 +18,7 @@ import java.util.List;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.CategoriaDao;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.MyDatabase;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoDao;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.PedidoDetalle;
@@ -35,13 +36,13 @@ public class ListaProductos extends AppCompatActivity{
     EditText edtProdCantidad;
     Producto P;
     private CategoriaDao cDao;
-
+    private ProductoDao pDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_productos);
         intent = getIntent();
-        final CategoriaRest apiRest = new CategoriaRest();
+       // final CategoriaRest apiRest = new CategoriaRest();
 
         //Obtenemos el edit text y boton agregar, para habilitarlo si es necesario
         edtProdCantidad = (EditText) findViewById(R.id.edtProdCantidad);
@@ -75,6 +76,7 @@ public class ListaProductos extends AppCompatActivity{
                     cDao = MyDatabase.getInstance(getApplicationContext()).getCategoriaDao();
                     //List<Categoria> nuevasCat = apiRest.listarTodas();
                     List<Categoria> nuevasCat = cDao.getAll();
+                    System.out.println(nuevasCat.size());
                     datosCategoria.addAll(nuevasCat);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -136,21 +138,48 @@ public class ListaProductos extends AppCompatActivity{
 
 
 
-    public void obtenerProductosCatElegida(String itemSeleccionado){
+    public void obtenerProductosCatElegida(final String itemSeleccionado){
         ListView lista = (ListView) findViewById(R.id.lstProductos);
         Spinner spinner = (Spinner) findViewById(R.id.cmbProductosCategoria);
         ProductoRepository Repositorio = new ProductoRepository();
         List<Categoria> datosCategoria;
         datosCategoria = Repositorio.getCategorias();
         Categoria cat=datosCategoria.get(0);
-        for (Categoria c: datosCategoria
-             ) {
+
+        for (Categoria c: datosCategoria) {
             if(c.toString().equals(itemSeleccionado)){
                cat=c;
             }
         }
-       //System.out.println(cat);
-        List<Producto> Datos = Repositorio.buscarPorCategoria(cat);
+        final List<Producto> Datos = Repositorio.buscarPorCategoria(cat);
+       /* final Categoria ca = cat;
+       //System.out.println(ca);
+
+        Thread r = new Thread() {
+            @Override
+            public void run() {
+
+                try {
+                    pDao = MyDatabase.getInstance(getApplicationContext()).getProductoDao();
+                    List<Producto> listaP = pDao.getAll();
+                    System.out.println(listaP.size());
+                    for(Producto p : listaP){
+                        if(p.getCategoria().getNombre().equals(ca.getNombre())){
+                           Datos.add(p);
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }};
+        r.start();*/
         lista.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
        ArrayAdapter adaptador = new ArrayAdapter(this,android.R.layout.simple_list_item_single_choice,Datos);
        lista.setAdapter(adaptador);

@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Producto;
 
 public class MyDatabase {
     // variable de clase privada que almacena una instancia unica de esta entidad
@@ -18,8 +19,9 @@ public class MyDatabase {
         return _INSTANCIA_UNICA;
     }
 
-    private CategoriaDatabase db;
+    private MyRoomDatabase db;
     private CategoriaDao categoriaDao;
+    private ProductoDao productoDao;
 
     // constructor privado para poder implementar SINGLETON
     // al ser privado solo puede ser invocado dentro de esta clase
@@ -29,11 +31,11 @@ public class MyDatabase {
     // sola instancia en toda la aplicacion
     private MyDatabase(Context ctx){
         db = Room.databaseBuilder(ctx,
-                CategoriaDatabase.class, "database-name")
+                MyRoomDatabase.class, "databasename")
                 .fallbackToDestructiveMigration()
                 .build();
         categoriaDao = db.categoriaDao();
-
+        productoDao = db.productoDao();
 
     }
 
@@ -49,6 +51,9 @@ public class MyDatabase {
         this.categoriaDao = categoriaDao;
     }
 
+    public ProductoDao getProductoDao() { return productoDao; }
+
+    public void setProductoDao(ProductoDao productoDao){ this.productoDao=productoDao; }
 
 
 }

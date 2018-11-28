@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.CategoriaDao;
-import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.CategoriaDatabase;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.MyRoomDatabase;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.MyDatabase;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
 

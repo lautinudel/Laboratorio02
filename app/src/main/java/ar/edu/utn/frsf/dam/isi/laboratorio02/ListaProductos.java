@@ -76,7 +76,18 @@ public class ListaProductos extends AppCompatActivity{
                     cDao = MyDatabase.getInstance(getApplicationContext()).getCategoriaDao();
                     //List<Categoria> nuevasCat = apiRest.listarTodas();
                     List<Categoria> nuevasCat = cDao.getAll();
-                   // System.out.println(nuevasCat.size());
+                    List<Categoria> aux = new ArrayList<>();
+                    // System.out.println(nuevasCat.size());
+                    for (Categoria c : datosCategoria){
+                        for(Categoria d : nuevasCat){
+                            if(c.getNombre().equals(d.getNombre())){
+                                aux.add(d); //LOS REPETIDOS
+                            }
+                        }
+
+                    }
+                    nuevasCat.removeAll(aux);
+                    System.out.println("Nuevas categorias: "+ nuevasCat.size());
                     datosCategoria.addAll(nuevasCat);
                 } catch (Exception e) {
                     e.printStackTrace();

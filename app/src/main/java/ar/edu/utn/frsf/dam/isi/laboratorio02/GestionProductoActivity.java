@@ -109,6 +109,18 @@ public class GestionProductoActivity extends AppCompatActivity {
                     pDao = MyDatabase.getInstance(getApplicationContext()).getProductoDao();
                     cDao = MyDatabase.getInstance(getApplicationContext()).getCategoriaDao();
                     List<Categoria> nuevasCat = cDao.getAll();
+                    List<Categoria> aux = new ArrayList<>();
+                    // System.out.println(nuevasCat.size());
+                    for (Categoria c : datosCategoria){
+                        for(Categoria d : nuevasCat){
+                            if(c.getNombre().equals(d.getNombre())){
+                                aux.add(d); //LOS REPETIDOS
+                            }
+                        }
+
+                    }
+                    nuevasCat.removeAll(aux);
+                    System.out.println("Nuevas categorias: "+ nuevasCat.size());
                     datosCategoria.addAll(nuevasCat);
                 } catch (Exception e) {
                     e.printStackTrace();

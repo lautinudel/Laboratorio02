@@ -18,23 +18,26 @@
         <ToggleButton
             android:id="@+id/abmProductoAltaNuevo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
+            android:text="CREAR PRODUCTO NUEVO"
             android:textOff="Crear producto nuevo"
-            android:textOn="Buscar por ID y actualizar"
-            android:text="CREAR PRODUCTO NUEVO" />
+            android:textOn="Buscar por ID y actualizar" />
         <TextView
             android:text="Buscar Producto por id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <EditText
             android:id="@+id/abmProductoIdBuscar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
+
         <Button
-            android:text="Buscar por ID..."
             android:id="@+id/btnAbmProductoBuscar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="36dp"
+            android:text="Buscar por ID..." />
         <TextView
             android:text="Datos del producto"
             android:layout_width="match_parent"
@@ -62,7 +65,8 @@
         <EditText
             android:id="@+id/abmProductoPrecio"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
         <TextView
             android:text="Categoria"
             android:layout_width="match_parent"
@@ -71,21 +75,24 @@
             android:id="@+id/abmProductoCategoria"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <Button
-            android:text="Guardar"
             android:id="@+id/btnAbmProductoCrear"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="36dp"
+            android:text="Guardar" />
+
         <Button
-            android:text="Borrar"
             android:id="@+id/btnAbmProductoBorrar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="38dp"
+            android:text="Borrar" />
+
         <Button
-            android:text="VOLVER"
             android:id="@+id/btnAbmProductoVolver"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="38dp"
+            android:text="VOLVER" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

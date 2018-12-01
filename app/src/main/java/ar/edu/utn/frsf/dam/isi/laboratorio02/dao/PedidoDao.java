@@ -14,10 +14,10 @@ import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.PedidoConDetalles;
 @Dao
 public interface PedidoDao {
     @Query("SELECT * FROM Pedido")
-    List<PedidoConDetalles> getAll();
+    List<Pedido> getAll();
 
     @Query("SELECT * FROM pedido WHERE id = (:pedidoIds)")
-    List<PedidoConDetalles> loadAllByIds(int pedidoIds);
+    List<Pedido> loadAllByIds(int pedidoIds);
 
     @Insert
     long insert(Pedido p);

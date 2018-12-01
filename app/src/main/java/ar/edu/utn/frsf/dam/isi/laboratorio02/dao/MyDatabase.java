@@ -33,7 +33,7 @@ public class MyDatabase {
     // sola instancia en toda la aplicacion
     private MyDatabase(Context ctx){
         db = Room.databaseBuilder(ctx,
-                MyRoomDatabase.class, "databasename")
+                MyRoomDatabase.class, "databaseName")
                 .fallbackToDestructiveMigration()
                 .build();
         categoriaDao = db.categoriaDao();

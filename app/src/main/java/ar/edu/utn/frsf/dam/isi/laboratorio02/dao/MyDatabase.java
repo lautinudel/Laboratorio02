@@ -22,6 +22,8 @@ public class MyDatabase {
     private MyRoomDatabase db;
     private CategoriaDao categoriaDao;
     private ProductoDao productoDao;
+    private PedidoDao pedidoDao;
+    private PedidoDetalleDao pedidoDetalleDao;
 
     // constructor privado para poder implementar SINGLETON
     // al ser privado solo puede ser invocado dentro de esta clase
@@ -36,6 +38,8 @@ public class MyDatabase {
                 .build();
         categoriaDao = db.categoriaDao();
         productoDao = db.productoDao();
+        pedidoDao = db.pedidoDao();
+        pedidoDetalleDao = db.pedidoDetalleDao();
 
     }
 
@@ -55,5 +59,20 @@ public class MyDatabase {
 
     public void setProductoDao(ProductoDao productoDao){ this.productoDao=productoDao; }
 
+    public PedidoDao getPedidoDao(){
+        return pedidoDao;
+    }
+
+    public void setPedidoDao(PedidoDao pedidoDao){
+        this.pedidoDao=pedidoDao;
+    }
+
+    public PedidoDetalleDao getPedidoDetalleDao(){
+        return pedidoDetalleDao;
+    }
+
+    public void setPedidoDetalleDao(PedidoDetalleDao pedidoDetalleDao){
+        this.pedidoDetalleDao=pedidoDetalleDao;
+    }
 
 }

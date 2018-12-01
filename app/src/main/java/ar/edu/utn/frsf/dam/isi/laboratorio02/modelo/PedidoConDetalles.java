@@ -1,0 +1,23 @@
+package ar.edu.utn.frsf.dam.isi.laboratorio02.modelo;
+
+import android.arch.persistence.room.Relation;
+import android.arch.persistence.room.Embedded;
+
+import java.util.List;
+
+
+public class PedidoConDetalles {
+        @Embedded
+        public Pedido pedido;
+
+        @Relation(parentColumn = "id", entityColumn = "ped_id", entity = PedidoDetalle.class)
+        public List<PedidoDetalle> detalle;
+
+        public List<PedidoDetalle> getDetalle(){
+            return detalle;
+        }
+
+        public Pedido getPedido(){
+            return pedido;
+        }
+}

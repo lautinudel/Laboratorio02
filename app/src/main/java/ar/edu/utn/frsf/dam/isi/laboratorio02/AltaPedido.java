@@ -22,8 +22,11 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.MyDatabase;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoDao;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRepository;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Pedido;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.PedidoDetalle;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Producto;
@@ -34,6 +37,7 @@ public class AltaPedido extends AppCompatActivity {
     private PedidoRepository repositorioPedido = new PedidoRepository();
     private ProductoRepository repositorioProducto = new ProductoRepository();
     List<PedidoDetalle> ProductosElegidos = new ArrayList<>();
+    private PedidoDao pedidoDao;
 
     EditText edtPedidoDireccion;
     ListView lista;
@@ -169,10 +173,31 @@ public class AltaPedido extends AppCompatActivity {
 
                             //Guardamos en el repositorio de pedidos y pasamos a la actividad "HistorialPedidos"
                             repositorioPedido.guardarPedido(unPedido);
+
+                            Thread r = new Thread() {
+                                @Override
+                                public void run() {
+
+                                    try {
+                                        //List<Categoria> nuevasCat = apiRest.listarTodas();
+                                        pedidoDao = MyDatabase.getInstance(getApplicationContext()).getPedidoDao();
+                                        pedidoDao.insert(unPedido);
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                        }
+                                    });
+                                }};
+                            r.start();
                             //System.out.println(unPedido.getId());
 
 
-                            Thread r = new Thread() {
+                            Thread x = new Thread() {
                                 @Override
                                 public void run() {
                                     try {
@@ -199,7 +224,7 @@ public class AltaPedido extends AppCompatActivity {
                                     });
                                 }};
                             //Thread unHilo = new Thread();
-                            r.start();
+                            x.start();
 
 
                             Intent i = new Intent(AltaPedido.this, HistorialPedidos.class);
